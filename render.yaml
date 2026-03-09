@@ -4,6 +4,7 @@ services:
     name: quicknotes-backend
     env: docker
     dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     plan: free
     region: ohio
     envVars:
@@ -17,6 +18,7 @@ services:
     name: quicknotes-frontend
     env: docker
     dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
     plan: free
     region: ohio
     envVars:
