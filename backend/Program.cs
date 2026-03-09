@@ -23,6 +23,15 @@ if (!builder.Environment.IsEnvironment("Testing"))
         ?? builder.Configuration.GetConnectionString("DefaultConnection")
         ?? "Host=localhost;Database=notesdb;Username=postgres;Password=postgres";
 
+    // Parse Render's postgres:// URI if applied
+    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) || 
+        connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+    {
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':');
+        connectionString = $"Host={uri.Host};Port={(uri.Port > 0 ? uri.Port : 5432)};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};Ssl Mode=Require;Trust Server Certificate=true;";
+    }
+
     builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseNpgsql(connectionString));
 }
