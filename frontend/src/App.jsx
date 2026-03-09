@@ -152,7 +152,7 @@ export default function App() {
                         <div className="input-group">
                             <textarea
                                 id="note-content-input"
-                                placeholder="Write your thoughts…"
+                                placeholder="Write your thoughts here…"
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
                                 className="textarea"
