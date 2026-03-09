@@ -1,0 +1,35 @@
+services:
+  # ── Backend API ──
+  - type: web
+    name: quicknotes-backend
+    env: docker
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    region: ohio
+    envVars:
+      - key: CONNECTION_STRING
+        fromDatabase:
+          name: quicknotes-db
+          property: connectionString
+
+  # ── Frontend App ──
+  - type: web
+    name: quicknotes-frontend
+    env: docker
+    dockerfilePath: ./frontend/Dockerfile
+    plan: free
+    region: ohio
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: quicknotes-backend
+          envVarKey: RENDER_EXTERNAL_URL
+
+databases:
+  # ── PostgreSQL Database ──
+  - name: quicknotes-db
+    databaseName: notesdb
+    user: postgres
+    plan: free
+    region: ohio
