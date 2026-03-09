@@ -17,12 +17,15 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Database
-var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? "Host=localhost;Database=notesdb;Username=postgres;Password=postgres";
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING")
+        ?? builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? "Host=localhost;Database=notesdb;Username=postgres;Password=postgres";
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseNpgsql(connectionString));
+}
 
 // CORS
 builder.Services.AddCors(options =>

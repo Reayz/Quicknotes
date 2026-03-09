@@ -14,19 +14,17 @@ public class TestWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
+        
+        // Generate a single database name for the lifetime of this WebApplicationFactory instance
+        var dbName = "TestNotesDb_" + Guid.NewGuid().ToString("N");
+
         builder.ConfigureServices(services =>
         {
-            // Remove the real PostgreSQL DbContext registration
-            var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AppDbContext>));
-
-            if (descriptor is not null)
-                services.Remove(descriptor);
-
             // Add in-memory database for testing
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("TestNotesDb_" + Guid.NewGuid().ToString("N"));
+                options.UseInMemoryDatabase(dbName);
             });
         });
     }
