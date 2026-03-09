@@ -132,3 +132,10 @@ docker compose down -v
 - **Frontend**: React 19 · Vite 6
 - **Database**: PostgreSQL 16
 - **Containerization**: Docker · Docker Compose
+
+
+
+# Deployed at Render
+
+url: https://quicknotes-frontend-ex2n.onrender.com/
+
