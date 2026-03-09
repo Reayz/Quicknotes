@@ -1,0 +1,46 @@
+services:
+  # ── PostgreSQL ────────────────────────────────────────────
+  postgres:
+    image: postgres:16
+    container_name: quicknotes-db
+    environment:
+      POSTGRES_DB: notesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ── Backend (.NET Web API) ────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+    container_name: quicknotes-backend
+    ports:
+      - "5000:5000"
+    environment:
+      CONNECTION_STRING: "Host=postgres;Database=notesdb;Username=postgres;Password=postgres"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ── Frontend (React + Nginx) ──────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: "http://localhost:5000"
+    container_name: quicknotes-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
