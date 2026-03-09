@@ -128,9 +128,9 @@ export default function App() {
             <header className="header">
                 <div className="logo">
                     <span className="logo-icon">📝</span>
-                    <h1>QuickNotes</h1>
+                    <h1>Quick Notes</h1>
                 </div>
-                <p className="tagline">Capture thoughts at the speed of light</p>
+                <p className="tagline">Capture thoughts at the speed of light!</p>
             </header>
 
             <main className="main">
