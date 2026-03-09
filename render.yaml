@@ -30,6 +30,5 @@ databases:
   # ── PostgreSQL Database ──
   - name: quicknotes-db
     databaseName: notesdb
-    user: postgres
     plan: free
     region: ohio
